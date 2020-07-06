@@ -1,0 +1,53 @@
+{
+  "name": "atsumeru-core",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "ColMarek",
+    "url": "https://colmarek.github.io"
+  },
+  "repository": {
+    "url": "git://github.com/ColMarek/atsumeru-core.git"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "start:dev": "nodemon",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "prepublish": "npm run build",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@types/nedb": "^1.8.9",
+    "@types/node": "^14.0.14",
+    "axios": "^0.19.2",
+    "moment": "^2.27.0",
+    "nedb": "^1.8.0",
+    "sqlite3": "^5.0.0",
+    "xml2js": "^0.4.23"
+  },
+  "devDependencies": {
+    "@types/moment": "^2.13.0",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "husky": "^4.2.5",
+    "nodemon": "^2.0.2",
+    "prettier": "^2.0.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.6.2",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.7.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
+  }
+}
