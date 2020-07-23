@@ -1,11 +1,16 @@
 # Atsumeru Core
 
+![npm](https://img.shields.io/npm/v/atsumeru-core?style=flat-square)
+
 Core code for Atsumeru
 
 ## Usage
 
+`yarn add atsumeru-core`
+
 ```Typescript
-import { AtsumeruCore } from "./src";
+// const { AtsumeruCore } = require("atsumery-core")
+import { AtsumeruCore } from "atsumeru-core";
 
 // The second parameter, a logger, is optional
 const atsumeruCore = new AtsumeruCore("./sampleDataDir", (s) => {
