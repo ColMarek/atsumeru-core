@@ -1,10 +1,3 @@
-# Atsumeru Core
-
-Core code for Atsumeru
-
-## Usage
-
-```Typescript
 import { AtsumeruCore } from "./src";
 
 // The second parameter, a logger, is optional
@@ -22,5 +15,3 @@ atsumeruCore
   .catch((e) => {
     console.log(e.message);
   });
-
-```

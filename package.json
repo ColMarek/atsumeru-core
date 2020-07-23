@@ -12,6 +12,7 @@
     "url": "git://github.com/ColMarek/atsumeru-core.git"
   },
   "scripts": {
+    "sample": "ts-node sample.ts",
     "start": "ts-node src/index.ts",
     "start:dev": "nodemon",
     "format": "prettier --write \"src/**/*.ts\"",
