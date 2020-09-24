@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/atsumeru-core?style=flat-square)
 
-Core code for Atsumeru
+Get 1080p anime feeds from [HorribeSubs](https://horriblesubs.info/).
 
 ## Usage
 
