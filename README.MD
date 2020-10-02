@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/atsumeru-core?style=flat-square)
 
-Get 1080p anime feeds from [HorribeSubs](https://horriblesubs.info/).
+Get 1080p anime subbed feeds from [nyaa.si](https://nyaa.si/).
 
 ## Usage
 
