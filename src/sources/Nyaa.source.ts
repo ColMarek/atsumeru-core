@@ -1,6 +1,7 @@
 import axios from "axios";
 import TorrentData from "../model/TorrentData";
 import { xmlStringToJson } from "../util/xmlToJson";
+import * as dayjs from "dayjs";
 
 export default class NyaaSource {
   static async getData(
@@ -46,7 +47,7 @@ export default class NyaaSource {
         torrentData.animeTitle = animeTitle;
         torrentData.episode = "0";
         torrentData.link = item["link"][0];
-        torrentData.date = item["pubDate"][0];
+        torrentData.date = dayjs(item["pubDate"][0]).unix();
         data.push(torrentData);
       }
 
