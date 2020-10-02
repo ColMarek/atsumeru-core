@@ -1,9 +1,9 @@
 import Datastore from "./db/Datastore";
 import FeedWithDetail from "./model/FeedWithDetail";
-import HSSource from "./sources/HSSource";
 import TorrentData from "./model/TorrentData";
 import Anilist from "./sources/Anilist";
 import AnimeDetail from "./model/AnimeDetail";
+import NyaaSource from "./sources/Nyaa.source";
 
 export class AtsumeruCore {
   private datastore: Datastore;
@@ -20,9 +20,9 @@ export class AtsumeruCore {
   }
 
   async getFeedWithDetail(): Promise<FeedWithDetail[]> {
-    const feed = await HSSource.getData(this.logger);
+    const feed = await NyaaSource.getData(this.logger);
     if (feed == null) {
-      throw new Error("Unable to feed from HorribleSubs");
+      throw new Error("Unable to feed from nyaa.si");
     }
     return this.getAnimeInfo(feed);
   }
