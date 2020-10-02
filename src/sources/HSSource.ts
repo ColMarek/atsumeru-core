@@ -1,8 +1,10 @@
 import axios from "axios";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import TorrentData from "../model/TorrentData";
 import { xmlStringToJson } from "../util/xmlToJson";
 
+// It's unlikely that this will ever be used.
+// Keeping just in case.
 export default class HSSource {
   static async getData(
     logger: (s: string) => void,
@@ -38,7 +40,7 @@ export default class HSSource {
           animeTitle,
           episode,
           link: item.link[0],
-          date: moment(item.pubDate[0]).unix(),
+          date: dayjs(item.pubDate[0]).unix(),
         });
       }
 
