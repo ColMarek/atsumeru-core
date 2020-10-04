@@ -3,7 +3,7 @@ import FeedWithDetail from "./model/FeedWithDetail";
 import TorrentData from "./model/TorrentData";
 import Anilist from "./sources/Anilist";
 import AnimeDetail from "./model/AnimeDetail";
-import NyaaSource from "./sources/Nyaa.source";
+import EraiSource from "./sources/Erai.source";
 
 export class AtsumeruCore {
   private datastore: Datastore;
@@ -20,9 +20,9 @@ export class AtsumeruCore {
   }
 
   async getFeedWithDetail(): Promise<FeedWithDetail[]> {
-    const feed = await NyaaSource.getData(this.logger);
+    const feed = await EraiSource.getData(this.logger);
     if (feed == null) {
-      throw new Error("Unable to feed from nyaa.si");
+      throw new Error("Unable to get feed");
     }
     return this.getAnimeInfo(feed);
   }
