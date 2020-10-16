@@ -281,3 +281,4 @@ $RECYCLE.BIN/
 dist
 sampleDataDir
 .npmrc
+.idea
