@@ -10,7 +10,7 @@ export default class EraiSource {
     logger("Fetching torrents from Erai-Raws");
 
     try {
-      const response = await axios.get("https://www.erai-rss.info/rss-1080/");
+      const response = await axios.get("https://www.erai-raws.info/rss-1080-magnet");
       const res: any = await xmlStringToJson(response.data);
       logger(
         `Retrieved ${res.rss.channel[0].item.length} items from Erai-Raws`,
