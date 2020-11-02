@@ -4,6 +4,7 @@ import TorrentData from "./model/TorrentData";
 import Anilist from "./sources/Anilist";
 import AnimeDetail from "./model/AnimeDetail";
 import EraiSource from "./sources/Erai.source";
+import AbstractSource from "./sources/Abstract.source";
 
 export class AtsumeruCore {
   private datastore: Datastore;
@@ -19,8 +20,9 @@ export class AtsumeruCore {
     }
   }
 
-  async getFeedWithDetail(): Promise<FeedWithDetail[]> {
-    const feed = await EraiSource.getData(this.logger);
+  async getFeed(source: AbstractSource) {
+    source.logger = this.logger;
+    const feed = await source.getData();
     if (feed == null) {
       throw new Error("Unable to get feed");
     }

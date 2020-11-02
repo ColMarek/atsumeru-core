@@ -2,19 +2,20 @@ import axios from "axios";
 import TorrentData from "../model/TorrentData";
 import { xmlStringToJson } from "../util/xmlToJson";
 import * as dayjs from "dayjs";
+import AbstractSource from "./Abstract.source";
 
-export default class NyaaSource {
-  static async getData(
-    logger: (s: string) => void,
-  ): Promise<TorrentData[] | null> {
+export default class NyaaSource extends AbstractSource {
+  constructor(url = "https://nyaa.si/?page=rss&q=1080p&c=1_2&f=0") {
+    super(url);
+  }
+
+  async getData(): Promise<TorrentData[] | null> {
     try {
-      logger("Fetching torrents from nyaa.si");
+      this.logger("Fetching torrents from nyaa.si");
 
-      const response = await axios.get(
-        "https://nyaa.si/?page=rss&q=1080p&c=1_2&f=0",
-      );
+      const response = await axios.get(this.url);
       const res: any = await xmlStringToJson(response.data);
-      logger(`Retrieved ${res.rss.channel[0].item.length} items from nyaa.si`);
+      this.logger(`Retrieved ${res.rss.channel[0].item.length} items from nyaa.si`);
 
       const data: TorrentData[] = [];
       for (const item of res.rss.channel[0].item) {
@@ -53,7 +54,7 @@ export default class NyaaSource {
 
       return data;
     } catch (error) {
-      logger(error.message);
+      this.logger(error.message);
       return null;
     }
   }
