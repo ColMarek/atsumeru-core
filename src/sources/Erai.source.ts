@@ -5,7 +5,7 @@ import { xmlStringToJson } from "../util/xmlToJson";
 import AbstractSource from "./Abstract.source";
 
 export default class EraiSource extends AbstractSource {
-  constructor(url = "https://www.erai-raws.info/rss-1080-magnet") {
+  constructor(url = "https://www.erai-raws.info/rss-1080magnet") {
     super(url);
   }
 
@@ -42,8 +42,15 @@ export default class EraiSource extends AbstractSource {
 
       return data;
     } catch (error) {
-      this.logger(error);
-      return null;
+      if (error.response) {
+        if (error.response.headers.server === "ddos-guard") {
+          throw new Error("Erai-raws feed blocked by DDoS-GUARD");
+        } else if (error.response.headers.server === "cloudflare") {
+          throw new Error(`Cloudflare error: ${error.response.statusText}`);
+        }
+        throw new Error(error.response.data);
+      }
+      throw error;
     }
   }
 }

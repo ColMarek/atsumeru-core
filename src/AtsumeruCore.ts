@@ -22,11 +22,13 @@ export class AtsumeruCore {
 
   async getFeed(source: AbstractSource) {
     source.logger = this.logger;
-    const feed = await source.getData();
-    if (feed == null) {
-      throw new Error("Unable to get feed");
+    try {
+      const feed = await source.getData();
+      return this.getAnimeInfo(feed);
+    } catch (e) {
+      this.logger(e.message);
+      throw e;
     }
-    return this.getAnimeInfo(feed);
   }
 
   private async getAnimeInfo(data: TorrentData[]): Promise<FeedWithDetail[]> {
