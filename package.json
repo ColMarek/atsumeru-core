@@ -23,7 +23,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "dayjs": "^1.9.1",
     "nedb": "^1.8.0",
     "xml2js": "^0.4.23"
