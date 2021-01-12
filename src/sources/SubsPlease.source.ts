@@ -23,13 +23,17 @@ export default class SubsPleaseSource extends AbstractSource {
       const animeTitle: string = item.title[0]
         .replace(/(\[)([^\[\]]*)(])/gm, "") // [*]
         .replace(/(\()([^()]*)(\))/gm, "") // [*]
-        .split(" - ")[0]
+        .split(" - ")
+        .slice(0, -1)
+        .join(" ")
         .replace(/ +/gm, " ") // Remove double spaces
         .replace(".mkv", "")
         .trim();
       let episode = null;
       if (item.title[0].includes("Batch")) {
-        episode = item.title[0].match(/\([^ ]*-[^ ]*\)/gm)[0].replace(/[()]/g, "");
+        episode = item.title[0]
+          .match(/\([^ ]*-[^ ]*\)/gm)[0]
+          .replace(/[()]/g, "");
       } else {
         const epNum = item.title[0].match(/( \d* )/gm);
         if (epNum) {
@@ -50,5 +54,4 @@ export default class SubsPleaseSource extends AbstractSource {
 
     return data;
   }
-
 }

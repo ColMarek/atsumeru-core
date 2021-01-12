@@ -24,7 +24,9 @@ export default class EraiSource extends AbstractSource {
         const animeTitle: string = item.title[0]
           .replace(/(\[)([^\[\]]*)(\])/gm, "") // [*]
           .replace(/r \(TV\)/gm, "r") // Specifically for Black Clover (TV)
-          .split(" – ")[0] // That is not a hypen, it's an en dash
+          .split(" – ") // That is not a hypen, it's an en dash
+          .slice(0, -1)
+          .join(" ")
           .replace(/ +/gm, " ") // Remove double spaces
           .trim();
         const episode: string = item.title[0].split(` – `)[1].split(" ")[0];
