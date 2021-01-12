@@ -8,16 +8,14 @@ const atsumeruCore = new AtsumeruCore("./sampleDataDir", (s) => {
   console.log(s);
 });
 
-
 // A custom rss feed url can be passed
-const nyaa = new NyaaSource()
+// new NyaaSource();
+// new EraiSource();
 
-// A custom rss feed url can be passed
-const erai = new EraiSource()
+const subsPlease = new SubsPleaseSource();
 
-const generic = new SubsPleaseSource("https://subsplease.org/rss/?r=1080")
-
-atsumeruCore.getFeed(generic)
+atsumeruCore
+  .getFeed(subsPlease)
   .then((res) => {
     res.forEach((r) => {
       console.log(`${r.animeTitle} - ${r.episode}`);

@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/atsumeru-core?style=flat-square)
 
-Get torrent feeds from [nyaa.si](https://nyaa.si/), [Erai-raws](https://www.erai-raws.info/) or a custom source.
+Get torrent feeds from [SubsPlease](https://subsplease.org/), [nyaa.si](https://nyaa.si/), [Erai-raws](https://www.erai-raws.info/) or a custom source.
 
 Anime details are from [Anilist](https://anilist.co).
 
@@ -20,12 +20,13 @@ const atsumeruCore = new AtsumeruCore("./sampleDataDir", (s) => {
 });
 
 // A custom rss feed url can be passed
-const nyaa = new NyaaSource()
+// new NyaaSource();
+// new EraiSource();
 
-// A custom rss feed url can be passed
-const erai = new EraiSource()
+const subsPlease = new SubsPleaseSource();
 
-atsumeruCore.getFeed(nyaa)
+atsumeruCore
+  .getFeed(subsPlease)
   .then((res) => {
     res.forEach((r) => {
       console.log(`${r.animeTitle} - ${r.episode}`);
