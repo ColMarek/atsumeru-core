@@ -35,9 +35,10 @@ export default class SubsPleaseSource extends AbstractSource {
           .match(/\([^ ]*-[^ ]*\)/gm)[0]
           .replace(/[()]/g, "");
       } else {
-        const epNum = item.title[0].match(/( \d* )/gm);
+        const epNum = item.title[0].match(/ \d*[v]?\d /gm);
         if (epNum) {
           episode = epNum[0].trim();
+          episode = episode.replace(/v\d*/gm, "")
         }
       }
       const plainTitle = animeTitle.replace(/[ \-():]/g, "");
