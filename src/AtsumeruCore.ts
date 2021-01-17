@@ -3,8 +3,9 @@ import FeedWithDetail from "./model/FeedWithDetail";
 import TorrentData from "./model/TorrentData";
 import Anilist from "./sources/Anilist";
 import AnimeDetail from "./model/AnimeDetail";
-import EraiSource from "./sources/Erai.source";
 import AbstractSource from "./sources/Abstract.source";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const PromisePool = require("@supercharge/promise-pool");
 
 export class AtsumeruCore {
   private datastore: Datastore;
@@ -32,59 +33,53 @@ export class AtsumeruCore {
   }
 
   private async getAnimeInfo(data: TorrentData[]): Promise<FeedWithDetail[]> {
-    const promises = [];
-    const alreadyFetched = [];
     const output: FeedWithDetail[] = [];
 
-    for (let index = 0; index < data.length; index++) {
-      const item = data[index];
+    await PromisePool
+      .withConcurrency(10)
+      .for(data)
+      .process(async (item: TorrentData) => {
+        this.logger(`Checking local datastore for '${item.animeTitle}'`);
+        // Check if the anime's details have already been saved
+        let detail: AnimeDetail = await this.datastore.findAnimeDetail(
+          item.animeTitle,
+        );
 
-      this.logger(`Checking local datastore for '${item.animeTitle}'`);
-      // Check if the anime's details have already been saved
-      const storeDetail: any = await this.datastore.findAnimeDetail(
-        item.animeTitle,
-      );
-
-      if (storeDetail == null) {
-        // Avoid fetching details of the same anime twice.
-        // Happens if the feed contains two eposides of the same anime
-        if (!alreadyFetched.includes(item.animeTitle)) {
-          // Add to an array of promises to allow fetching simultaneously
-          promises.push(Anilist.getDetail(item.animeTitle, this.logger));
-          alreadyFetched.push(item.animeTitle);
-        } else {
-          this.logger(`Already searched for '${item.animeTitle}' in this run`);
+        // If the anime details have not been previously saved
+        if (detail == null) {
+          detail = await Anilist.getDetail(item.animeTitle, this.logger);
+          if (detail != null) {
+            await this.datastore.saveAnimeDetail(detail);
+          }
+        }else{
+          this.logger(`'${item.animeTitle}' found locally`);
         }
-      } else {
-        this.logger(`'${item.animeTitle}' found locally`);
-        output[index] = {
-          ...item,
-          detail: storeDetail,
-        };
-      }
-    }
 
-    const details = await Promise.all(promises);
-    details.forEach((d: AnimeDetail) => {
-      if (d != null) {
-        this.datastore.saveAnimeDetail(d);
-        const indexes = this.getAllIndexesOf(d.title, data);
-        indexes.forEach((i) => {
-          output[i] = {
-            ...data[i],
-            detail: d,
+        // If searching fails
+        // Happens if an anime it titled as 'S2' instead of the actual name
+        if (detail == null) {
+          const urlEncodedName = encodeURIComponent(item.animeTitle.slice(0, 10));
+          detail = {
+            title: item.animeTitle,
+            description: null,
+            imageColor: "#CCCCCC",
+            imageUrl: `https://via.placeholder.com/460x651.png?text=${urlEncodedName}`,
+            siteUrl: null,
           };
+        }
+
+        output.push({
+          id: item.id,
+          title: item.title,
+          animeTitle: item.animeTitle,
+          episode: item.episode,
+          link: item.link,
+          date: item.date,
+          detail,
         });
-      }
-    });
+      });
 
     return output;
   }
 
-  private getAllIndexesOf(title, data) {
-    const indexes = [];
-    for (let i = 0; i < data.length; i++)
-      if (data[i].animeTitle === title) indexes.push(i);
-    return indexes;
-  }
 }

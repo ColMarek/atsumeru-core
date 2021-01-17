@@ -45,7 +45,7 @@ export default class Datastore {
     });
   }
 
-  async findAnimeDetail(title: string) {
+  async findAnimeDetail(title: string): Promise<AnimeDetail> {
     return new Promise((resolve, reject) => {
       this.db.find({ _id: title }, (err, doc) => {
         if (err) {
