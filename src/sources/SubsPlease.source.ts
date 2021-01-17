@@ -48,7 +48,7 @@ export default class SubsPleaseSource extends AbstractSource {
       const plainTitle = animeTitle.replace(/[ \-():]/g, "");
       const id = `${plainTitle.toLowerCase()}_${episode}`;
       if (this.incorrectNames[animeTitle]) {
-        console.log(`Replacing '${animeTitle}' with '${this.incorrectNames[animeTitle]}'`);
+        this.logger(`Replacing '${animeTitle}' with '${this.incorrectNames[animeTitle]}'`);
         animeTitle = this.incorrectNames[animeTitle];
       }
       data.push({
