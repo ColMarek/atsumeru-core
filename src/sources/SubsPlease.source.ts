@@ -5,6 +5,10 @@ import { xmlStringToJson } from "../util/xmlToJson";
 import * as dayjs from "dayjs";
 
 export default class SubsPleaseSource extends AbstractSource {
+  private incorrectNames = {
+    "Yuru Camp S2": "Yuru Camp△ SEASON 2",
+  };
+
   constructor(url = "https://subsplease.org/rss/?r=1080") {
     super(url);
   }
@@ -20,7 +24,7 @@ export default class SubsPleaseSource extends AbstractSource {
 
     const data: TorrentData[] = [];
     for (const item of res.rss.channel[0].item) {
-      const animeTitle: string = item.title[0]
+      let animeTitle: string = item.title[0]
         .replace(/(\[)([^\[\]]*)(])/gm, "") // [*]
         .replace(/(\()([^()]*)(\))/gm, "") // [*]
         .split(" - ")
@@ -43,6 +47,10 @@ export default class SubsPleaseSource extends AbstractSource {
       }
       const plainTitle = animeTitle.replace(/[ \-():]/g, "");
       const id = `${plainTitle.toLowerCase()}_${episode}`;
+      if (this.incorrectNames[animeTitle]) {
+        console.log(`Replacing '${animeTitle}' with '${this.incorrectNames[animeTitle]}'`);
+        animeTitle = this.incorrectNames[animeTitle];
+      }
       data.push({
         id,
         title: item.title[0],
